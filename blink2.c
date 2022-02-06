@@ -24,14 +24,17 @@
 #include <avr/io.h>     /* Defines pins, ports, etc */
 #include <util/delay.h> /* Functions to waste time */
 
-#define BLINK_ON 100
-#define BLINK_OFF 900
+#define BLINK_ON  100
+#define BLINK_OFF 400
+#define LED1    0b00000001
+#define LED2    0b00000010
+#define ALL_OFF 0b00000000
 
 int main(void)
 {
 
     // -------- Inits --------- //
-    DDRB |= 0b00000001; /* Data Direction Register B:
+    DDRB |= 0b00000011; /* Data Direction Register B:
                                    writing a one to the bit
                                    enables output. */
 
@@ -39,10 +42,16 @@ int main(void)
     while (1)
     {
 
-        PORTB = 0b00000001;  /* Turn on first LED bit/pin in PORTB */
+        PORTB = LED1;  /* Turn on first LED bit/pin in PORTB */
         _delay_ms(BLINK_ON); /* wait */
 
-        PORTB = 0b00000000;   /* Turn off all B pins, including LED */
+        PORTB = ALL_OFF;   /* Turn off all B pins, including LED */
+        _delay_ms(BLINK_OFF); /* wait */
+
+        PORTB = LED2;  /* Turn on first LED bit/pin in PORTB */
+        _delay_ms(BLINK_ON); /* wait */
+
+        PORTB = ALL_OFF;   /* Turn off all B pins, including LED */
         _delay_ms(BLINK_OFF); /* wait */
 
     }         /* End event loop */
